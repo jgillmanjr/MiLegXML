@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="https://miopencarry.org/Bill" xmlns:tns="https://miopencarry.org/Bill" elementFormDefault="qualified">
+
+    <element name="bill" type="tns:bill"></element>
+    
+    <complexType name="bill">
+    	<sequence>
+    		<element name="sponsor" type="tns:sponsor" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="coSponsors" type="tns:coSponsors"
+    			maxOccurs="1" minOccurs="0">
+    		</element>
+    		<element name="amend" type="tns:amend" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="updatedTitle" type="tns:actTitle"
+    			maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					This is if an entirely new act is being created,
+    					or the title of an existing act is being
+    					updated.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="billData" type="tns:billData" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    	</sequence>
+    	<attribute name="chamber" type="string" use="required"></attribute>
+    	<attribute name="billNumber" type="int" use="required"></attribute>
+    	<attribute name="dateIntroduced" type="date" use="required"></attribute>
+    </complexType>
+
+
+
+    <complexType name="sponsor">
+    	<sequence>
+    		<element name="firstName" type="string"></element>
+    		<element name="lastName" type="string"></element>
+    	</sequence>
+    	<attribute name="title" use="required">
+    		<simpleType>
+    			<restriction base="string">
+    				<enumeration value="SEN"></enumeration>
+    				<enumeration value="REP"></enumeration>
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    	<attribute name="district" use="required">
+    		<simpleType>
+    			<restriction base="int">
+    			</restriction>
+    		</simpleType>
+    	</attribute>
+    </complexType>
+
+    <complexType name="coSponsors">
+    	<sequence>
+    		<element name="cosponsor" type="tns:sponsor" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="amend">
+        <all>
+        	<element name="actNumber" type="int" maxOccurs="1"
+        		minOccurs="1">
+        	</element>
+            <element name="actYear" type="int" maxOccurs="1" minOccurs="1">
+        	</element>
+            <element name="actTitle" type="string" maxOccurs="1" minOccurs="1">
+        		<annotation>
+        			<documentation>When amending an existing act, this is where the title goes.</documentation>
+        		</annotation></element>
+        </all>
+        
+    </complexType>
+
+    <complexType name="actTitle" mixed="true">
+    	<all>
+            <element name="add" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+            <element name="delete" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+    	</all>
+    </complexType>
+
+    <complexType name="billData">
+    	<sequence>
+    		<element name="section" type="tns:section"
+    			maxOccurs="unbounded" minOccurs="1">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="section" mixed="true">
+    	<all>
+    		<element name="subSection" type="tns:subsection"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="mclRef" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    		<element name="paRef" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    	</all>
+
+    	<attribute name="sectionID" type="string"></attribute>
+    </complexType>
+    
+
+
+    <complexType name="subsection" mixed="true">
+    	<all>
+    		<element name="paragraph" type="tns:paragraph"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="mclRef" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    		<element name="paRef" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    	</all>
+
+    	<attribute name="subSectionID" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="paragraph" mixed="true">
+    	<all>
+    		<element name="subParagraph" type="tns:subParagraph"></element>
+    		<element name="mclRef" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    		<element name="paRef" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    	</all>
+
+    	<attribute name="paraID" type="string" use="required"></attribute>
+    </complexType>
+    
+    <complexType name="subParagraph" mixed="true">
+    	<all>
+    		<element name="mclRef" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    		<element name="paRef" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    	</all>
+    	<attribute name="subParaID" type="string" use="required"></attribute>
+    </complexType>
+</schema>
